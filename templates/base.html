@@ -140,14 +140,14 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="header__logo">
                         <a href="{% url 'home' %} "><img src=" {% static '/core/img/logo_camomila.jpg'%} " width=80 alt=""></a>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <nav class="header__menu">
-                        <ul>
+                <div class="col-lg-8 "  style='display: flex; justify-content: space-around;' >
+                    <nav class="header__menu" >
+                        <ul >
                             <li class=" {% if request.path == '/' %} active {% endif %} "><a href="{% url 'home' %}">Inicio</a></li>
                             <li class=" {% if request.path == '/secciones/' %} active {% endif %} "><a href="{% url 'secciones' %}" >Secciones</a></li>
                             <li class=" {% if request.path == '/tienda/' %} active {% endif %} "><a href="{% url 'tienda' %}">Tienda</a></li>
@@ -157,7 +157,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="header__cart">
                         {% if request.user.is_authenticated %}
                         <ul>
