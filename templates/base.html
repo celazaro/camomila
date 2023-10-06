@@ -68,7 +68,7 @@
                     {% if request.user.is_authenticated %}
 
                     <ul>
-                        <li><a class="dropdown-item" href=" {% url 'perfil' %} "><img src= " {% static 'core/img/perfil_default.png' %}" width='24'  alt=""> </a> </li>
+                        <li><a class="dropdown-item" href=" {% url 'perfil' %} "><img src= " {{ user.cliente.imagen.url }}" width='24'  alt=""> </a> </li>
                         <li><span>Bienvenid@ {{ user.first_name }}</span></li>
                         <li><a class=" btn btn-sm btn-secondary" href=" {% url 'logout' %} ">Cerrar Sesión</a></li>
                     </ul>  
