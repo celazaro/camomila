@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block title %}Camomila Registración{% endblock %}
+
+{% block content %}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg=" {% static 'core/img/banner_camomila.png' %} "  style="box-shadow: 10px 20px 30px  rgba(0, 0, 0, 0.9); ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Registración Camomila</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Inicio</a>
+                            <span>Registración</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <br>
+    <br>
+
+    <form method="POST">
+        
+        {% csrf_token %}
+     
+         <div class="container breadcrumbs align-items-center ">
+     
+           <div class="card mx-auto p-3 col-lg-6 col-md-8" style="width: auto;">
+             <div class="card-body">
+               <h4 class="card-title"> Registro de Usuarios </h4>
+     
+              {{ form | crispy }}
+     
+               <a href= ' {% url 'home' %}' class="btn btn-sm btn-secondary">Inicio</a>
+               
+               <button type='submit' name='login' class="btn btn-sm btn-success" style='float: right;' >Guardar Datos</button>
+     
+             </div>
+     
+           </div>
+     
+         </div>
+     
+     </form>
+
+     <br>
+
+{% endblock %}

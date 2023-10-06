@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Camomila Pago{% endblock %}
+
+{% block content %}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg=" {% static 'core/img/banner_camomila.png' %} "  style="box-shadow: 10px 20px 30px  rgba(0, 0, 0, 0.9); ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Pago Pedido Camomila</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Inicio</a>
+                            <span>Pago Pedido</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <br><br>
+    
+    <div  class=" modal-dialog-centered centered " style="width: 1000px;" >
+        <div class="modal-content p-lg-3"   >
+
+        
+            <h4> {{ user.first_name }} {{ user.last_name }} muchas gracias por su compra!    </h4>
+
+            <br> 
+
+            <h5> Recibirá un correo a su dirección indicada con los datos de este pedido para su información. </h5>
+            <h5> También desde su perfil podrá ver los pedidos realizados y su estado. </h5>
+            <br>
+            <h5> Realizar la transferencia a la cuenta del Banco Nación con los siguientes datos: </h5>
+            <h6> alias: camomila.dietetica.mendoza </h6>
+            <h6> CBU : 123123123123123 </h6>
+
+            <br>
+
+            <div class="col-lg-10 col-md-6 centered">
+                <div class="checkout__order">
+                    <h4>Pedido N° {{ numero_pedido }} </h4>
+                    <table class="table">
+                        <thead class="table-secondary">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cant</th>
+                            <th>P.Unit</th>
+                            <th>Precio</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for lp in lineapedidos %}  
+                        <tr>
+                            <td>{{ lp.producto }}</td>
+                            <td> {{ lp.cantidad }} </td>
+                            <td> {{ lp.precio | floatformat:2 }} </td>
+                            <td> {{ lp.total_producto | floatformat:2 }}  </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    
+                    <div class="checkout__order__subtotal">Total <span>${{ total| floatformat:2 }}</span></div>
+                    
+                    <div class="checkout__order__subtotal">Cantidad de productos <span>{{ total_unidades }}</span></div>
+                    <div class="checkout__input__checkbox"></div>
+                    
+                </div>
+            </div>
+            <br>
+            <h5> Agradecemos adjunte el comprobante de su transferencia: </h5>
+            <form action="" method="GET" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <br>
+                    <input class="form-control" type="file" name="imagen" id="imagen">
+                    <br>
+                    <button type="submit" class="btn  btn-sm btn-secondary float-end"  >Enviar</button>
+                    <br>
+                </div>
+            </form>
+            <h5> Una vez recibida su transferencia nos comunicaremos telefonicamente con Usted para coordinar la entrega de los </h5>
+            <h5> productos comprados.</h5>
+            <br>
+        </div>
+    </div>
+
+        <br> <br>
+
+{% endblock %}

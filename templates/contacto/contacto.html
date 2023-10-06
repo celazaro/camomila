@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Camomila Contacto{% endblock %}
+
+{% block content %}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg=" {% static 'core/img/banner_camomila.png' %} "  style="box-shadow: 10px 20px 30px  rgba(0, 0, 0, 0.9); ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Contacto Camomila</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Inicio</a>
+                            <span>Contacto</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    <br>
+    <br>
+    <div class='container align-items-center'>
+        
+        <p class="fs-5 text-center px-5">Es un placer que quieras comunicarte con nosotros. Nos pondremos en contacto contigo en el menor tiempo posible</p>
+        <div class="row">
+            <div class="col-md-6">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nombre y Apellido</label>
+                        {{ form.name }}
+                        {{ form.name.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Correo Electrónico</label>
+                        {{ form.email }}
+                        {{ form.email.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Mensaje</label>
+                        {{ form.message }}
+                        {{ form.message.errors }}
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Enviar Mensaje" {% if 'ok' in request.GET %}disabled{% endif %}{% if 'error' in request.GET %}disabled{% endif %}>
+                </form>
+    
+                {% if 'ok' in request.GET %}
+                    <div class="alert alert-success mt-5" role="alert">
+                        <strong>El mensaje se ha enviado correctamente</strong>
+                    </div>
+                {% endif %}
+    
+                {% if 'error' in request.GET %}
+                    <div class="alert alert-danger mt-5" role="alert">
+                        <strong>El mensaje no ha podido ser enviado. Por favor, intente más tarde</strong>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="col-md-6 mb-5 ">
+                <img class="float-end img-fluid" src={% static 'contact/img/email.jpg' %} alt="">
+            </div>
+        </div>
+            
+    </div> 
+
+
+{% endblock %}

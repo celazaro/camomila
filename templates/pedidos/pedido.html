@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Camomila Pedido{% endblock %}
+
+{% block content %}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg=" {% static 'core/img/banner_camomila.png' %} "  style="box-shadow: 10px 20px 30px  rgba(0, 0, 0, 0.9); ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Pedido Camomila</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Inicio</a>
+                            <span>Pedido</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+   <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 ">
+                    <h6><span class="icon_tag_alt"></span> Complete la información requerida para finalizar el pedido realizado </h6>
+                </div>
+            </div>
+            <div class="checkout__form" >
+                <h4>Detalles Facturación y Envío</h4>
+                {% if messages %}
+                {% for mensaje in messages %}
+                    <h5> <span class='alert alert-{{ mensaje.tags }}' > {{ mensaje }} </span> </h5>
+                    <br>
+                {% endfor %}
+                {% endif %}
+                
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p >Nombre</p>
+                                        <input type="text" class="form-control" name="first_name" style="color: darkblue; font-size: 18px;" value='{{ user.first_name }}' disabled>
+                                                                                
+                                    </div>
+                                </div>
+                                <div class="col-lg-6"> 
+                                    <div class="checkout__input">
+                                        <p>Apellido</p>
+                                        <input type="text" class="form-control" name="last_name" style="color: darkblue; font-size: 18px;" value='{{ user.last_name }}' disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="checkout__input">
+                                <p>Dirección<span>*</span></p>
+
+                                <input type="text" class="form-control" name="direccion_calle" style="color: darkblue; font-size: 18px;" placeholder="Calle y número" value='{{ user.cliente.direccion_calle }}' >
+
+                                <input type="text" class="form-control" name="direccion_otros" style="color: darkblue; font-size: 18px;"  placeholder="Barrio, casa, edificio, departamento, etc. " value='{{ user.cliente.direccion_otros }}' >
+
+                            </div>
+                            <div class="checkout__input">
+                                <p>Localidad<span>*</span></p>
+                                <input type="text" class="form-control" name="localidad" style="color: darkblue; font-size: 18px;" value=' {{ user.cliente.localidad }} '>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Departamento<span>*</span></p>
+                                <input type="text" class="form-control" name="departamento" style="color: darkblue; font-size: 18px;" value=' {{ user.cliente.departamento }} '>
+                            </div>
+                            <div class="checkout__input">
+                                <p>Código Postal<span>*</span></p>
+                                <input type="text" class="form-control" name="codigo_postal" style="color: darkblue; font-size: 18px;" value=' {{ user.cliente.codigo_postal }} '>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Teléfono<span>*</span></p>
+                                        <input type="text" class="form-control" name="telefono" style="color: darkblue; font-size: 18px;" value=' {{ user.cliente.telefono }} '>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <p>Email</p>
+                                        <input type="text" class="form-control" name="email" style="color: darkblue; font-size: 18px;" value='{{ user.email }}' disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="checkout__input">
+                                <p>¿Desea enviar el pedido a una dirección alternativa?</p>
+                                <input type="text" class="form-control" name='direccion_alternativa' style="color: darkblue; font-size: 18px;" value='{{ user.cliente.direccion_alternativa }}' placeholder="Dirección alternativa a donde enviar este pedido" >
+
+                            </div>
+                            <div class="checkout__input">
+                                <p>Otras notas</p>
+                                <input type="text" name='notas'
+                                    placeholder="Aclaraciones sobre su compra, e.g. notas especiales para el envío." style="color: darkblue; font-size: 18px;" value='{{ user.cliente.notas }}'>
+                                <br><br>
+                                <p><span>*</span>Campos Obligatorios y necesarios para el correcto envío de su pedido</p>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="checkout__order">
+                                
+                                <table class="table">
+                                    <thead class="table-secondary">
+                                      <tr>
+                                        <th>Producto</th>
+                                        <th>Cant</th>
+                                        <th>P.Unit</th>
+                                        <th>Precio</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {% for key, value in request.session.carro.items %}  
+                                      <tr>
+                                        <td>{{ value.nombre }}</td>
+                                        <td> {{ value.cantidad }} </td>
+                                        <td> {{ value.precio_unit | floatformat:2 }} </td>
+                                        <td> {{ value.precio | floatformat:2 }}  </td>
+                                      </tr>
+                                      {% endfor %}
+                                </table>
+                                
+                                <div class="checkout__order__subtotal">Subtotal <span>${{ importe_total_carro | floatformat:2 }}</span></div>
+                                <div class="checkout__order__total">Total <span>${{ importe_total_carro | floatformat:2 }}</span></div>
+                                <div class="checkout__order__subtotal">Cantidad de productos <span>{{ articulos_total_carro }}</span></div>
+                                <div class="checkout__input__checkbox">
+                                
+                                </div>
+                                <br>
+                                <h4>Forma de Pago</h4>
+                                <p>Seleccione solo una de las alternativas<span>*</span></p>
+                                <div class="checkout__input__checkbox">
+                                    <label for="transferencia">
+                                        Transferencia Bancaria
+                                        <input type="checkbox" id="transferencia" name='transferencia'>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="checkout__input__checkbox">
+                                    <label for="tarjeta">
+                                        Tarjeta de débito o crédito
+                                        <input type="checkbox" id="tarjeta" name='tarjeta'>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <div class="checkout__input__checkbox">
+                                    <label for="contraentrega">
+                                        Pago contraentrega de mercadería
+                                        <input type="checkbox" id="contraentrega" name='contraentrega'>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+
+
+                                <button type="submit" class="site-btn" >Pago del Pedido</button>
+                                {% comment %} <a  class="site-btn" href="{% url 'pago_pedido' %}" >Pago del Pedido</a> {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+{% endblock %}

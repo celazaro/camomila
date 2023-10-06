@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Camomila Tienda{% endblock %}
+
+{% block content %}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg=" {% static 'core/img/banner_camomila.png' %} "  style="box-shadow: 10px 20px 30px  rgba(0, 0, 0, 0.9); ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        {% for ns in nombre_seccion %}
+                        <h2>Tienda Camomila <br> {{ ns.titulo }}   </h2>
+                        {% endfor %}
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Inicio</a>
+                            <span>Tienda</span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+    
+    <!-- Product Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-5">
+                    <div class="sidebar">
+                        <div class="sidebar__item">
+                            <h4>Secciones</h4>
+                            {% for sec in secciones %}
+                                <ul>
+                                    <li><a href=" {% url 'seccion' sec.id %} ">{{ sec.titulo }}</a></li>
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-7">
+                    <div class="product__discount">
+                        <div class="section-title product__discount__title">
+                            <h2>Ofertas</h2>
+                        </div>
+                        <div class="row">
+
+                            {% if not prod_ofertas %}
+
+                            <div class='col-lg-12' >
+                                <h4> No hay productos en oferta </h4>
+
+                            </div>
+                            {% else %}
+
+                            {% if cantidad_prod_ofertas > 3 %}
+                            
+                            <div class="product__discount__slider owl-carousel"> 
+                            
+                            {% else %} 
+                            <div class="row col-lg-12">
+                            {% endif %}
+
+                                {% for prod in prod_ofertas %}
+
+                                <div class="col-lg-4">
+                                    <div class="product__discount__item">
+                                        
+                                        <div class="product__discount__item__pic set-bg"
+                                            data-setbg=" {{ prod.imagen.url }}  ">
+                                            <div class="product__discount__percent">-{{ prod.porcentaje_oferta }}%</div>
+                                            <ul class="product__item__pic__hover">
+                                                
+                                                <li><a href="#"><i class="fa fa-info-circle"></i></a></li>
+                                                
+                                                <li><a href=" {% if request.user.is_authenticated %}  {% url 'carro:agregar' prod.id %} {% else %} {% url 'login' %} {% endif %} "><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__discount__item__text">
+                                            <span>{{  prod.categoria }}</span>
+                                            <h5><a href="#">{{  prod.nombre }}</a></h5>
+                                            
+                                            <div class="product__item__price">${{ prod.precio_descuento | floatformat:2 }}   <span>${{  prod.precio | floatformat:2 }}</span></div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+            <div class="row" >
+                
+
+                {% if not productos %}
+                    <div class='col-lg-12 mb-5' style="display: flex; justify-content: center; align-items: center;" >
+                        <h2> No hay productos en esta sección </h2>
+                        <br><br>
+                    </div>
+                
+                {% else %}
+
+                {% for prod in pagina_actual %}
+                    
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg=" {{ prod.imagen.url }} ">
+                                <ul class="product__item__pic__hover">
+                                    
+                                    <li><a href="#"><i class="fa fa-info-circle"></i></a></li>
+                                    
+                                    <li><a href=" {% if request.user.is_authenticated %}  {% url 'carro:agregar' prod.id %} {% else %} {% url 'login' %} {% endif %} "><i class="fa fa-shopping-cart"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#"> {{ prod.nombre }} </a></h6>
+                                <h5>${{ prod.precio }}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                {% endfor %}
+                {% endif %}
+            </div>
+                
+
+            <div class="container">
+                <nav aria-label="...">
+                    <ul class="pagination justify-content-center">
+                    
+                        <li class="page-item">
+                        <a class="page-link" href="?page=1">Inicio</a>
+                        </li>
+                    
+                        {% if pagina_actual.has_previous %}
+                        <li class="page-item {% if pagina_actual.number == 1 %}disabled{% endif %}">
+                        <a class="page-link" href="{% if pagina_actual.number != 1 %}?page={{pagina_actual.previous_page_number }}{% endif %}">Anterior</a>
+                        </li>
+                        {% endif %}
+                    
+                    
+                        <li class="page-item">
+                            <a class="page-link text-danger"> Página {{ pagina_actual.number }}  de {{ pagina_actual.paginator.num_pages }} </a>
+                        </li>
+                        
+                    
+                        {% if pagina_actual.has_next %}
+                        <li class="page-item {% if pagina_actual.number == pagina_actual.paginator.num_pages %}disabled{% endif %}">
+                        <a class="page-link" href="{% if pagina_actual.number != pagina_actual.paginator.num_pages %}?page={{ pagina_actual.next_page_number }}{% endif %}">Siguiente</a>
+                        </li>
+                        {% endif %}
+                    
+                        <li class="page-item">
+                        <a class="page-link" href="?page={{ pagina_actual.paginator.num_pages }}">Ultima</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+
+
+{% endblock %}
