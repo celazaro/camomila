@@ -27,7 +27,7 @@
 
     <br><br>
     
-    <div  class=" modal-dialog-centered centered " style="width: 1000px;" >
+    <div  class=" modal-dialog-centered centered " style="width:100%;" >
         <div class="modal-content p-lg-3"   >
 
         
@@ -40,7 +40,7 @@
 
             <br>
 
-            <div class="col-lg-10 col-md-6 centered">
+            <div class="col-lg-12 col-md-12 centered">
                 <div class="checkout__order">
                     <h4>Pedido N° {{ numero_pedido }} </h4>
                     <table class="table">
@@ -80,7 +80,7 @@
                             <div class="col-12">
                                 <div class="d-flex flex-column">
                                     <p class="text mb-1">Nombre</p>
-                                    <input class="form-control mb-3" type="text" placeholder="Name" value="José Rodriguez">
+                                    <input class="form-control mb-3" type="text" placeholder="Nombre y Apellido" >
                                 </div>
                             </div>
                             <div class="col-12">
@@ -104,7 +104,7 @@
                             <div class="col-12">
                                 <div class="btn btn-secondary mb-3">
                                     <span class="ps-3">Pago $ {{ total| floatformat:2 }} </span>
-                                    <span class="fas fa-arrow-right"></span>
+                                    <span class="bi bi-arrow-right"></span>
                                 </div>
                             </div>
                         </div>
