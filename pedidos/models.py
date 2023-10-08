@@ -9,6 +9,16 @@ from tienda.models import Producto
 
 User=get_user_model()
 
+class EstadoPedido(models.Model):
+    estado=models.CharField(max_length=100)
+    def __str__(self):
+        return self.estado
+    
+    class Meta:
+        verbose_name='Estado Pedido'
+        verbose_name_plural='Estados Pedidos'
+        ordering=['id']
+
 class Pedido(models.Model):
     user=models.ForeignKey(User, on_delete=models.CASCADE) # Cuando se elimine un usuario sus pedidos se eliminirán en cascada
     created_at=models.DateTimeField(auto_now_add=True)   #Para le fecha de pedido automática
