@@ -152,7 +152,8 @@ def resumen_pedido(request, pk):
     
     return context
     
-
+def informe_pedidos(request):
+    return render(request,'pedidos/informe_pedidos.html')
 
 
 

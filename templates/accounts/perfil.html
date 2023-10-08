@@ -53,16 +53,17 @@
                         <hr>
 
                         {% if request.user.username == 'admin'  %}
-                            <a class="btn btn-warning w-100 mb-1" href="{% url 'admin:index' %}">Ir al Admin</a>
+                            <a class="btn btn-outline-warning w-100 mb-1" href="{% url 'admin:index' %}">Ir al Admin</a>
                         {% endif %}
 
                         <button type="button" class="btn btn-outline-secondary w-100 mb-1"  data-bs-toggle="modal" data-bs-target="#editProfileModal">
                             Editar Perfil
                         </button>
+                        <a class="btn btn-outline-primary w-100 mb-1" href=" {% url 'informe_pedidos' %} ">Ver Pedidos</a>
 
                         <br>
                          
-                        <a class="btn btn-danger w-100" href="{% url 'logout' %}">Cerrar sesión</a>
+                        <a class="btn btn-outline-danger w-100" href="{% url 'logout' %}">Cerrar sesión</a>
                     </div>
                 </div>
             </div>

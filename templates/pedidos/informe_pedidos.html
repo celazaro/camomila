@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Camomila Informe Pedidos{% endblock %}
+
+{% block content %}
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-section set-bg" data-setbg=" {% static 'core/img/banner_camomila.png' %} "  style="box-shadow: 10px 20px 30px  rgba(0, 0, 0, 0.9); ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="breadcrumb__text">
+                        <h2>Informe Pedidos Camomila</h2>
+                        <div class="breadcrumb__option">
+                            <a href="{% url 'home' %}">Inicio</a>
+                            <span>Informe Pedidos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    
+    <div  class="container  mb-4 mt-5 " style="width: 100%;" >
+        <div class="modal-content p-3">
+
+            <h4>Historial de Pedidos de: {{ user.first_name }} {{ user.last_name }} </h4>
+            <br>
+            <div class="col-lg-12 col-md-12 centered">
+                <div class="checkout__order ">
+                    <div class="row" >
+                        <div class='col-3'>
+                            <h5><strong>Pedido N°  </strong> 124 </h5>
+                        </div>
+                        <div class='col-6'>
+                            <h5><strong>Realizado el: </strong>  05/10/2023 17:30 </h5>
+                        </div>
+                        <div class='col-3'>
+                            <h5><strong>Estatus Pedido:   </strong> Entregado</h5>
+                        </div>
+
+                    </div>
+
+                    <h6> 2 DETOX SUPER PLUS 250MG</h6>
+                    <h6> 1 ARROZ INFLADO 500G</h6>
+                    <h5><strong>Total $ 3245.90</strong> </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}
