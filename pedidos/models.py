@@ -11,8 +11,17 @@ User=get_user_model()
 
 
 class Pedido(models.Model):
+    OPCIONES = (
+        ('opcion1', 'PEDIDO RECIBIDO'),
+        ('opcion2', 'CONFIRMACION PAGO'),
+        ('opcion3', 'PEDIDO EN PREPARACIÓN'),
+        ('opcion4', 'PEDIDO EN REPARTO'),
+        ('opcion5', 'PEDIDO ENTREGADO'),
+    )
     user=models.ForeignKey(User, on_delete=models.CASCADE) # Cuando se elimine un usuario sus pedidos se eliminirán en cascada
+    estado=models.CharField(max_length=100, choices=OPCIONES, default='opcion1', null=False, blank=True )
     created_at=models.DateTimeField(auto_now_add=True)   #Para le fecha de pedido automática
+    modificado=models.DateTimeField(auto_now_add=True)
 
     @property
     def total(self):

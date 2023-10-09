@@ -4,8 +4,8 @@ from .models import Pedido, LineaPedido
 # Register your models here.
 
 class PedidoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'created_at')
-    readonly_fields=('created_at',)  
+    list_display = ('id', 'user', 'created_at','estado','modificado')
+    readonly_fields=('created_at', 'modificado')  
     
 class LineaPedidoAdmin(admin.ModelAdmin):
     list_display = ( 'pedido', 'user','cantidad','producto','precio', 'created_at')
