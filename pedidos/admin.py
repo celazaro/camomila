@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import Pedido, LineaPedido, EstadoPedido
-
+from .models import Pedido, LineaPedido
 # Register your models here.
 
 class PedidoAdmin(admin.ModelAdmin):
@@ -14,7 +13,6 @@ class LineaPedidoAdmin(admin.ModelAdmin):
 
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(LineaPedido, LineaPedidoAdmin)
-admin.site.register(EstadoPedido)
 
 
 
