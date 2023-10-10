@@ -32,24 +32,48 @@
             <h4>Historial de Pedidos de: {{ user.first_name }} {{ user.last_name }} </h4>
             <br>
             <div class="col-lg-12 col-md-12 centered">
-                <div class="checkout__order ">
+                {% for p in pedido %}
+                <div class="checkout__order p-2">
                     <div class="row" >
                         <div class='col-3'>
-                            <h5><strong>Pedido N°  </strong> 124 </h5>
+                            <h5><strong>Pedido N°  </strong> {{ p.pk }} </h5>
                         </div>
                         <div class='col-6'>
-                            <h5><strong>Realizado el: </strong>  05/10/2023 17:30 </h5>
+                            <h5><strong>Realizado el: </strong>  {{ p.created_at }} </h5>
                         </div>
                         <div class='col-3'>
-                            <h5><strong>Estatus Pedido:   </strong> Entregado</h5>
+                            <h5><strong> {{ p.get_estado_display }}</strong> </h5>
                         </div>
 
                     </div>
 
-                    <h6> 2 DETOX SUPER PLUS 250MG</h6>
-                    <h6> 1 ARROZ INFLADO 500G</h6>
-                    <h5><strong>Total $ 3245.90</strong> </h5>
+                    <div class='p-3'>
+                        <table border='1'>
+                            <tr>
+                                <th width="80px" style="text-align: center;">Cantidad</th>
+                                <th width="500px" style="text-align: center;">Producto</th>
+                                <th width="100px" style="text-align: center;">Precio</th>
+                            </tr>
+                            {% for lp in lineapedido %}
+                            {% if lp.pedido == p %}
+                            
+                            <tr>
+                                
+                                <td width="80px" style="text-align: center;">{{ lp.cantidad }}</td>
+                                <td width="500px">{{ lp.producto }}</td>
+                                <td width="100px" style="text-align: right;"> $ {{ lp.precio|floatformat:2 }}</td>
+                            </tr>
+                            
+                                    
+                            {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                    
+                    <h5><strong>Total $ {{ p.importe_total | floatformat:2 }} </strong> </h5>
+                    <hr>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>

@@ -107,7 +107,6 @@ def procesar_pedido(request):
     )
 
     return resumen_pedido(request, pk=pedido)
-   
 
 def enviar_mail(**kwargs):
     asunto="CAMOMILA - Tienda Natural :  Confirmación de Pedido"
@@ -138,6 +137,12 @@ def resumen_pedido(request, pk):
         total = total + lp.total_producto
         total_unidades = total_unidades + lp.cantidad
     
+    # Insertar el Total del Pedido calculado en la tabla Pedidos, campo importe_total
+    obj = pk   # con esto indicamos que el objeto pertenece al pedido en curso
+    total_pedido = total
+        
+    obj.importe_total = total_pedido
+    obj.save()
     
     context = {
         'numero_pedido': pk,
@@ -153,7 +158,18 @@ def resumen_pedido(request, pk):
     return context
     
 def informe_pedidos(request):
-    return render(request,'pedidos/informe_pedidos.html')
+    user = request.user
+    lineapedido = LineaPedido.objects.filter(user=user)
+    pedido = Pedido.objects.filter(user=user)
+    
+    
+    context = {
+         'lineapedido': lineapedido,
+         'pedido': pedido,
+
+    }
+    
+    return render(request,'pedidos/informe_pedidos.html', context)
 
 
 
