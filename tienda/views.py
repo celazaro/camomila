@@ -37,14 +37,14 @@ def tienda(request):
     ) 
     
     prod_ofertas = prod_ofertas.filter(oferta=True)
-    
+    cantidad_prod_ofertas = prod_ofertas.count()
     
     context = {
         'secciones':secciones,
         'productos': productos,
         'pagina_actual': pagina_actual,
         'prod_ofertas': prod_ofertas,
-        
+        'cantidad_prod_ofertas': cantidad_prod_ofertas,
     }
     
     return render(request, 'tienda/tienda.html', context)
