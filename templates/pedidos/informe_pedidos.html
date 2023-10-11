@@ -52,7 +52,7 @@
                             <tr>
                                 <th width="80px" style="text-align: center;">Cantidad</th>
                                 <th width="500px" style="text-align: center;">Producto</th>
-                                <th width="100px" style="text-align: center;">Precio</th>
+                                <th width="120px" style="text-align: center;">Precio Unitario</th>
                             </tr>
                             {% for lp in lineapedido %}
                             {% if lp.pedido == p %}
@@ -61,7 +61,7 @@
                                 
                                 <td width="80px" style="text-align: center;">{{ lp.cantidad }}</td>
                                 <td width="500px">{{ lp.producto }}</td>
-                                <td width="100px" style="text-align: right;"> $ {{ lp.precio|floatformat:2 }}</td>
+                                <td width="120px" style="text-align: right;"> $ {{ lp.precio|floatformat:2 }}</td>
                             </tr>
                             
                                     
