@@ -1,5 +1,5 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 
 from django.views.generic import TemplateView
 from accounts.forms import UserForm, ClienteForm
@@ -7,13 +7,15 @@ from django.contrib import messages
 
 from pedidos.models import Pedido, LineaPedido
 from carro.carro import Carro
-from django.core.mail import send_mail
-
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 
 from django.db.models import F
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+from django.template.loader import render_to_string
+from camomila_web import settings
 
 # Create your views here.
 
@@ -98,30 +100,55 @@ def procesar_pedido(request):
             ))
 
     LineaPedido.objects.bulk_create(lineas_pedido) # crea registros en BBDD en paquete
-    #enviamos mail al cliente
-    enviar_mail(
-        pedido=pedido,
-        lineas_pedido=lineas_pedido,
-        nombreusuario=request.user.username,
-        email_usuario=request.user.email
-    )
 
     return resumen_pedido(request, pk=pedido)
 
 def enviar_mail(**kwargs):
-    asunto="CAMOMILA - Tienda Natural :  Confirmación de Pedido"
-    mensaje = render_to_string("pedidos/emails/email_pedido.html", {
-        "pedido": kwargs.get("pedido"),
-        "lineas_pedido": kwargs.get("lineas_pedido"),
-        "nombreusuario":kwargs.get("nombreusuario"),
-        "email_usuario":kwargs.get("email_usuario"),
-        })
+    try:
+        # Establecemos conexion con el servidor smtp de gmail
+        mailServer = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        print(mailServer.ehlo())
+        mailServer.starttls()
+        print(mailServer.ehlo())
+        mailServer.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+        
+        print('conectando...')
+        
+        pedido = kwargs.get("pedido")
+        nombreusuario = kwargs.get("nombreusuario")
+        apellidousuario = kwargs.get("apellidousuario")
+        email_usuario = kwargs.get("email_usuario")
+        total = kwargs.get("total")
+        lineapedidos = kwargs.get("lineapedidos")
+        
+        email_to = email_usuario
 
-    mensaje_texto=strip_tags(mensaje)
-    from_email="c4rl0s.l4z4r0@gmail.com"
-    to=kwargs.get("email_usuario")
-    
-    send_mail(asunto,mensaje_texto,from_email,[to], html_message=mensaje)
+        # Construimos el mensaje simple
+        mensaje = MIMEMultipart()
+        mensaje['From']=settings.EMAIL_HOST
+        mensaje['To']=email_to
+        mensaje['Subject']="CAMOMILA - Tienda Natural: Confirmación Pedido"
+        
+        context = {
+            'pedido': pedido,
+            'nombre' : nombreusuario,
+            'apellido' : apellidousuario,
+            'lineapedidos' : lineapedidos,
+            'total' : total,
+        }
+        
+        content = render_to_string('pedidos/emails/pedido_recibido_correo.html', context)
+        mensaje.attach(MIMEText(content, 'html'))
+        
+        # Envio del mensaje
+        mailServer.sendmail(settings.EMAIL_HOST,
+                        email_to,
+                        mensaje.as_string())
+        
+        print('Correo enviado con éxito!!!')
+        
+    except Exception as e:
+        print(e)
     
 
 def resumen_pedido(request, pk):
@@ -147,11 +174,20 @@ def resumen_pedido(request, pk):
     context = {
         'numero_pedido': pk,
         'user': request.user,
-        
         'total': total,
         'total_unidades': total_unidades,
         'lineapedidos': lineapedidos,
     }
+    
+     # Enviamos mail al cliente
+    enviar_mail(
+        pedido=pk,
+        nombreusuario=request.user.first_name,
+        apellidousuario=request.user.last_name,
+        email_usuario=request.user.email,
+        total=total,
+        lineapedidos = lineapedidos,
+    )
     
     carro.limpiar_carro()  # agregada por CLA para cerrar sesión carro e iniciar nuevamente
     
@@ -162,11 +198,9 @@ def informe_pedidos(request):
     lineapedido = LineaPedido.objects.filter(user=user)
     pedido = Pedido.objects.filter(user=user)
     
-    
     context = {
          'lineapedido': lineapedido,
          'pedido': pedido,
-
     }
     
     return render(request,'pedidos/informe_pedidos.html', context)

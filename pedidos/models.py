@@ -53,7 +53,7 @@ class LineaPedido(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.cantidad} de {self.producto.nombre}'
+        return f'{self.cantidad} de {self.producto.nombre}  ${self.precio}'
 
     class Meta:
         db_table='lineapedidos'
